@@ -22,9 +22,12 @@ def main(args):
 
     if torch.cuda.is_available():
         model.cuda()
-    if args.mode == 'train' and args.data == 'Indoor':
+
+    if args.mode == 'train': and (args.data == 'I-Haze' or args.data == 'O-Haze'):
+        _train_ots(model, args)
+    if args.mode == 'train' and args.data == 'SOTS-Indoor':
         _train(model, args)
-    elif args.mode == 'train' and args.data == 'Outdoor':
+    elif args.mode == 'train' and args.data == 'SOTS-Outdoor':
         _train_ots(model, args)
     elif args.mode == 'test':
         _eval(model, args)
@@ -35,8 +38,7 @@ if __name__ == '__main__':
     # Directories
     parser.add_argument('--model_name', default='SFNet', type=str)
     parser.add_argument('--data_dir', type=str, default='/root/autodl-tmp/SFNet/reside-indoor')
-    parser.add_argument('--data', type=str, default='Indoor', choices=['Indoor', 'Outdoor'])
-
+    parser.add_argument('--data', type=str, default='SOTS-Indoor', choices=['SOTS-Indoor', 'SOTS-Outdoor', 'I-Haze', 'O-Haze'])
     parser.add_argument('--mode', default='train', choices=['train', 'test'], type=str)
     # Train
     parser.add_argument('--batch_size', type=int, default=4)
