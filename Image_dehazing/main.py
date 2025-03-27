@@ -23,7 +23,7 @@ def main(args):
     if torch.cuda.is_available():
         model.cuda()
 
-    if args.mode == 'train': and (args.data == 'I_Haze' or args.data == 'O_Haze'):
+    if args.mode == 'train' and (args.data == 'I_Haze' or args.data == 'O_Haze'):
         _train_ots(model, args)
     elif args.mode == 'train' and args.data == 'SOTS_Indoor':
         _train(model, args)
