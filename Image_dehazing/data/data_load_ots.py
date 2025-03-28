@@ -58,10 +58,11 @@ class DeblurDataset(Dataset):
 
     def __getitem__(self, idx):
         image = Image.open(os.path.join(self.image_dir, 'hazy', self.image_list[idx])).convert('RGB')
-        if self.is_valid:      
-            label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.png')).convert('RGB')
-        else:
-            label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.jpg')).convert('RGB')
+        label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.png')).convert('RGB')
+        # if self.is_valid:      
+        #     label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.png')).convert('RGB')
+        # else:
+        #     label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.jpg')).convert('RGB')
         ps = self.ps
 
         if self.ps is not None:
