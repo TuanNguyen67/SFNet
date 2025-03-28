@@ -23,6 +23,37 @@ def main(args):
     if torch.cuda.is_available():
         model.cuda()
 
+    if args.fine_tune:
+        # Load model parameters
+        state_dict = torch.load(args.pretrained)
+        model.load_state_dict(state_dict['model'])
+        
+        # Freeze Encoder
+        for param in model.Encoder.parameters():
+            param.requires_grad = False  
+        
+        # Freeze các phần không cần fine-tune (Convs, ConvsOut, FAM, SCM)
+        for param in model.Convs.parameters():
+            param.requires_grad = False  
+        for param in model.ConvsOut.parameters():
+            param.requires_grad = False  
+        for param in model.FAM1.parameters():
+            param.requires_grad = False  
+        for param in model.FAM2.parameters():
+            param.requires_grad = False  
+        for param in model.SCM1.parameters():
+            param.requires_grad = False  
+        for param in model.SCM2.parameters():
+            param.requires_grad = False  
+        
+        # Fine-tune Decoder
+        for param in model.Decoder.parameters():
+            param.requires_grad = True   
+        
+        # Fine-tune feat_extract (cả phần downsampling & upsampling)
+        for param in model.feat_extract.parameters():  
+            param.requires_grad = True  
+
     if args.mode == 'train' and (args.data == 'I_Haze' or args.data == 'O_Haze'):
         _train_ots(model, args)
     elif args.mode == 'train' and args.data == 'SOTS_Indoor':
@@ -40,6 +71,9 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default='/root/autodl-tmp/SFNet/reside-indoor')
     parser.add_argument('--data', type=str, default='SOTS_Indoor', choices=['SOTS_Indoor', 'SOTS_Outdoor', 'I_Haze', 'O_Haze'])
     parser.add_argument('--mode', default='train', choices=['train', 'test'], type=str)
+
+    # Fine-tune
+    parser.add_argument('--pretrained', type=str, default='')
     
     # Train
     parser.add_argument('--batch_size', type=int, default=4)
