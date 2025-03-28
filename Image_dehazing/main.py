@@ -40,6 +40,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default='/root/autodl-tmp/SFNet/reside-indoor')
     parser.add_argument('--data', type=str, default='SOTS_Indoor', choices=['SOTS_Indoor', 'SOTS_Outdoor', 'I_Haze', 'O_Haze'])
     parser.add_argument('--mode', default='train', choices=['train', 'test'], type=str)
+    
     # Train
     parser.add_argument('--batch_size', type=int, default=4)
     parser.add_argument('--learning_rate', type=float, default=1e-4)
@@ -50,6 +51,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_freq', type=int, default=10)
     parser.add_argument('--valid_freq', type=int, default=10)
     parser.add_argument('--resume', type=str, default='')
+    parser.add_argument('--fine_tune', type=bool, default=False, choices=[True, False])
 
     # Test
     parser.add_argument('--test_model', type=str, default='/root/autodl-tmp/SFNet/SOTS-Indoor.pkl')
