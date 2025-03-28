@@ -208,9 +208,9 @@ class SFconv(nn.Module):
         if mode[0] == 'train':
             self.gap = nn.AdaptiveAvgPool2d(1)
         elif mode[0] == 'test':
-            if mode[1] == 'Indoor':
+            if (mode[1] == 'I_Haze') or (mode[1] == 'SOTS_Indoor'):
                 self.gap = AvgPool2d(base_size=246)
-            elif mode[1] == 'Outdoor':
+            elif (mode[1] == 'O_Haze') or (mode[1] == 'SOTS_Outdoor'):
                 self.gap = AvgPool2d(base_size=210)
 
     def forward(self, low, high):
@@ -242,9 +242,9 @@ class Patch_ap(nn.Module):
         if mode[0] == 'train':
             self.ap = nn.AdaptiveAvgPool2d((1,1))
         elif mode[0] == 'test':
-            if mode[1] == 'Indoor':
+            if (mode[1] == 'I_Haze') or (mode[1] == 'SOTS_Indoor'):
                 self.ap = AvgPool2d(base_size=246)
-            elif mode[1] == 'Outdoor':
+            elif (mode[1] == 'O_Haze') or (mode[1] == 'SOTS_Outdoor'):
                 self.ap = AvgPool2d(base_size=210)
 
 
