@@ -69,9 +69,9 @@ class DeblurDataset(Dataset):
         label_path = os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0] + '.png')
     
         with Image.open(image_path) as img:
-            image = img.convert("RGB")  # Chuyển về RGB tránh lỗi 4 kênh (RGBA)
+            image = img.convert("RGB").resize((512, 512))  # Chuyển về RGB tránh lỗi 4 kênh (RGBA)
         with Image.open(label_path) as lbl:
-            label = lbl.convert("RGB")
+            label = lbl.convert("RGB").resize((512, 512))
     
         if self.transform:
             image, label = self.transform(image, label)
