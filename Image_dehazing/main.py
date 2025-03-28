@@ -85,7 +85,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_freq', type=int, default=10)
     parser.add_argument('--valid_freq', type=int, default=10)
     parser.add_argument('--resume', type=str, default='')
-    parser.add_argument('--fine_tune', type=bool, default=False, choices=[True, False])
+    parser.add_argument('--fine_tune', action='store_true', help='Enable fine-tune mode')
 
     # Test
     parser.add_argument('--test_model', type=str, default='/root/autodl-tmp/SFNet/SOTS-Indoor.pkl')
