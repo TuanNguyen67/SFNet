@@ -63,19 +63,38 @@ class DeblurDataset(Dataset):
 
     def __len__(self):
         return len(self.image_list)
-
+    
     def __getitem__(self, idx):
-        image = Image.open(os.path.join(self.image_dir, 'hazy', self.image_list[idx]))
-        label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.png'))
+        image_path = os.path.join(self.image_dir, 'hazy', self.image_list[idx])
+        label_path = os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0] + '.png')
+    
+        with Image.open(image_path) as img:
+            image = img.convert("RGB")  # Chuyển về RGB tránh lỗi 4 kênh (RGBA)
+        with Image.open(label_path) as lbl:
+            label = lbl.convert("RGB")
+    
         if self.transform:
             image, label = self.transform(image, label)
         else:
             image = F.to_tensor(image)
             label = F.to_tensor(label)
+    
         if self.is_test:
-            name = self.image_list[idx]
-            return image, label, name
+            return image, label, self.image_list[idx]
+    
         return image, label
+    # def __getitem__(self, idx):
+    #     image = Image.open(os.path.join(self.image_dir, 'hazy', self.image_list[idx]))
+    #     label = Image.open(os.path.join(self.image_dir, 'gt', self.image_list[idx].split('_')[0]+'.png'))
+    #     if self.transform:
+    #         image, label = self.transform(image, label)
+    #     else:
+    #         image = F.to_tensor(image)
+    #         label = F.to_tensor(label)
+    #     if self.is_test:
+    #         name = self.image_list[idx]
+    #         return image, label, name
+    #     return image, label
 
     @staticmethod
     def _check_image(lst):
